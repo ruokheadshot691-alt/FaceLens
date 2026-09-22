@@ -69,3 +69,13 @@ Lalu build:
 ### Catatan provider
 
 Bing Visual Search API lama tidak lagi menjadi pilihan untuk implementasi baru karena layanan Bing Search APIs termasuk Visual Search telah retired pada 11 Agustus 2025. Microsoft menyatakan tidak ada pengganti Azure langsung yang menyediakan reverse-image search terhadap hasil web publik sebagai API standalone.
+
+
+## Face Search
+
+FaceLens has two separate workflows:
+
+- **Local Face Match:** detects and embeds faces on-device, then compares them with faces already indexed in the user's own selected collections.
+- **Web Image Search:** sends the selected image directly from the device to a selected reverse-image provider and displays the provider inside an in-app WebView. FaceLens does not proxy or store the image.
+
+Local Face Match is not a web identity lookup. Web Image Search is image-level reverse search, not a claim of identity.

@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
 import java.util.Base64
 
 /**
- * Hosts the official consumer reverse-image-search page in a WebView and submits
+ * Hosts a consumer reverse-image-search page in a WebView and submits
  * the selected image directly to that provider. TraceLens never receives the
  * image back and never stores it remotely.
  */
@@ -93,7 +93,7 @@ class WebImageSearchActivity : Activity() {
         (async()=>{
           const b64='${base64}';
           const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
-          const file=new File([bytes],'tracelens.jpg',{type:'image/jpeg'});
+          const file=new File([bytes],'facelens.jpg',{type:'image/jpeg'});
           const form=document.createElement('form');
           form.method='POST'; form.enctype='multipart/form-data';
           form.action='https://lens.google.com/v3/upload?ep=fntpubb&st='+Date.now();
@@ -112,7 +112,7 @@ class WebImageSearchActivity : Activity() {
         (async()=>{
           const b64='${base64}';
           const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
-          const file=new File([bytes],'tracelens.jpg',{type:'image/jpeg'});
+          const file=new File([bytes],'facelens.jpg',{type:'image/jpeg'});
           const form=document.createElement('form');
           form.method='POST'; form.enctype='multipart/form-data';
           form.action='https://yandex.com/images/search?rpt=imageview';

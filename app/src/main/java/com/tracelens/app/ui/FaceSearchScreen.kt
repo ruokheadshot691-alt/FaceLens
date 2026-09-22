@@ -106,7 +106,40 @@ fun FaceSearchScreen(vm: SearchViewModel, onBack: () -> Unit, onCollections: () 
                             }
                         }
                     }
-                    item { SectionTitle("Cari di") }
+                    item { SectionTitle("Cari wajah di koleksi perangkat") }
+                    item {
+                        Text(
+                            "Ini membandingkan embedding wajah dengan foto yang sudah di-index di FaceLens. Foto tidak dikirim ke server untuk pencarian lokal.",
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                    item {
+                        Button(
+                            onClick = vm::runFaceSearch,
+                            enabled = !vm.faceSearching && vm.indexedFaces > 0,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(if (vm.faceSearching) "Mencari…" else "Cari wajah mirip di koleksi")
+                        }
+                    }
+                    item { SectionTitle("Cari gambar ini di web") }
+                    item {
+                        Text(
+                            "Pencarian web mencari kecocokan gambar publik melalui penyedia reverse-image search. FaceLens tidak menyimpan gambar di backend.",
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                    item {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+                            vm.publicWebProviders.forEach { provider ->
+                                OutlinedButton(
+                                    onClick = { vm.runPublicWebSearch(provider) },
+                                    modifier = Modifier.weight(1f),
+                                ) { Text(provider.label) }
+                            }
+                        }
+                    }
+                    item { SectionTitle("Koleksi lokal") }
                     item {
                         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             item { FilterChip(selected = vm.scopeCollectionId == null, onClick = { vm.scopeCollectionId = null }, label = { Text("Semua koleksi") }) }
@@ -119,11 +152,6 @@ fun FaceSearchScreen(vm: SearchViewModel, onBack: () -> Unit, onCollections: () 
                         Column {
                             Text("Similarity minimum: ${(vm.faceThreshold * 100).toInt()}%  (default profil: ${(vm.profile.possible * 100).toInt()}%)", style = MaterialTheme.typography.bodySmall)
                             Slider(value = vm.faceThreshold, onValueChange = { vm.faceThreshold = it }, valueRange = 0.2f..0.9f)
-                        }
-                    }
-                    item {
-                        Button(onClick = vm::runFaceSearch, enabled = !vm.faceSearching && vm.indexedFaces > 0, modifier = Modifier.fillMaxWidth()) {
-                            Text(if (vm.faceSearching) "Mencari…" else "Cari wajah mirip")
                         }
                     }
                 }
@@ -139,7 +167,7 @@ fun FaceSearchScreen(vm: SearchViewModel, onBack: () -> Unit, onCollections: () 
                         onClick = { vm.openCompare(h); onCompare() },
                     )
                 }
-                item { Text("Skor = cosine similarity antar embedding wajah. Ini kemiripan visual, bukan bukti identitas.", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(bottom = 24.dp)) }
+                item { Text("Skor = cosine similarity antar embedding wajah. Ini kemiripan visual, bukan bukti identitas atau identifikasi orang.", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(bottom = 24.dp)) }
             }
         }
     }
